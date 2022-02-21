@@ -124,6 +124,7 @@ assertThat은?
      }
    }
    close는 연결해서 까져오는 것이기 때문에 꼭 try-catch가 필요하다.
+   아래는 close를 하지않아도 자동으로 된다
    
   try(FileWriter f=new FileWriter(filename:"data.txt")
   {
