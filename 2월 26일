@@ -1,0 +1,48 @@
+2월 25일이랑 26일에 저게 이해가 잘 안되서 같이 소모했다
+저거랑 List 처리할 떄 정적으로 처리할꺼면 Arrays 동적으로 처리할꺼면 ListArray 쓰는거랑
+함수 짤 때 공급은 extends, 호출할 때는 super를 써야한다는 거 공부한 거 같다
+저거랑 싱글톤 공부했는데, 블로그에 holder에 대한 초기화에 관한 자료는 설명이랑 코드는 있는데 예시를 들어서 설명안하길래 직접 짰다... null을 이용한 방법보단 holder가 짧아서 작성했는데
+볼 때는 왜 이게 작동하나 싶었는데 final 때문에 작동하는 것 같다.
+
+class Something {
+    private int volume;
+    private Something() {
+        int volume=5;
+    }
+ 
+    private static class LazyHolder {
+        public static final Something INSTANCE = new Something();
+        //final로 생성해서 단 한번만 작동함
+    }
+ 
+    public static Something getInstance() {
+        return LazyHolder.INSTANCE;
+    }
+    public void setVolume(int volume) {
+        this.volume=volume;
+    }
+    public int getVolume() {
+        return this.volume;
+    }
+}
+
+
+
+
+
+public class java41 {
+    public static void main(String[] args) {
+        Something a=Something.getInstance();
+        a.setVolume(4);
+        System.out.println(a.getVolume());
+        Something b=Something.getInstance();
+        b.setVolume(6);
+        System.out.println(b.getVolume());
+        System.out.println(a.getVolume());
+    }
+    
+}
+
+
+
+
