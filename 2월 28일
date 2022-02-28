@@ -1,0 +1,122 @@
+오늘은 빌더 패턴이 어떠한 환경에서 제일 효과적일까 생각했고, 위와 같이 작성했다
+
+class Computer {
+    private String cpu="default";
+    private String ram="default";
+    private String hdd="default";
+    private String ssd="default";
+    private String gpu="default";
+    private String keyboard="default";
+    private String computerMouse="default";
+    private String monitor="default";
+    public Computer(){}
+    public Computer (String cpu,String ram,String hdd,String ssd,String gpu,String keyboard,String computerMouse,String monitor) {
+        this.cpu=cpu;
+        this.ram=ram;
+        this.hdd=hdd;
+        this.ssd=ssd;
+        this.gpu=gpu;
+        this.keyboard=keyboard;
+        this.computerMouse=computerMouse;
+        this.monitor=monitor;
+    }
+
+
+}
+
+class ComputerBuy {
+    private Computer computer;
+    private String cpu="default";
+    private String ram="default";
+    private String hdd="default";
+    private String ssd="default";
+    private String gpu="default";
+    private String keyboard="default";
+    private String computerMouse="default";
+    private String monitor="default";
+    ComputerBuy buy;
+    public ComputerBuy() {
+        computer=new Computer(buy.cpu,buy.ram,buy.hdd,buy.ssd,buy.gpu,buy.keyboard,buy.computerMouse,buy.monitor);
+    }
+    public ComputerBuy(String cpu,String ram,String hdd,String ssd,String gpu,String keyboard,String computerMouse,String monitor) {
+        this.cpu=cpu;
+        this.gpu=gpu;
+        this.hdd=hdd;
+        this.ssd=ssd;
+        this.ram=ram;
+        this.monitor=monitor;
+        this.keyboard=keyboard;
+        this.computerMouse=computerMouse;
+        computer=new Computer(cpu,ram,hdd,ssd,gpu,keyboard,computerMouse,monitor);
+    }
+    public ComputerBuy setCpu(String cpu) {
+        this.cpu = cpu;
+        return this;
+    }
+    public ComputerBuy setGpu(String gpu) {
+        this.gpu = gpu;
+        return this;
+    }
+    public ComputerBuy setHdd(String hdd) {
+        this.hdd = hdd;
+        return this;
+    }
+    public ComputerBuy setSsd(String ssd) {
+        this.ssd = ssd;
+        return this;
+    }
+    public ComputerBuy setRam(String ram) {
+        this.ram = ram;
+        return this;
+    }
+    public ComputerBuy setMonitor(String monitor) {
+        this.monitor = monitor;
+        return this;
+    }
+    public ComputerBuy setKeyboard(String keyboard) {
+        this.keyboard = keyboard;
+        return this;
+    }
+    public ComputerBuy setComputerMouse(String computerMouse) {
+        this.computerMouse = computerMouse;
+        return this;
+    }
+    public static ComputerBuy start() {
+        return new ComputerBuy();
+       
+    }
+    public Computer build() {
+        computer=new Computer(this.cpu, this.ram, this.hdd, this.ssd, this.gpu, this.keyboard, this.computerMouse, this.monitor);
+        return computer;
+    }
+    @Override
+    public String toString() {
+        return cpu+" "+ram+" "+hdd+" "+ssd+" "+gpu+" "+keyboard+" "+computerMouse+" "+monitor+"\n";
+    }
+}
+
+//A가 사는 컴퓨터의 부품은 영원한 수명을 가지고 있고, A가 컴퓨터에 맞는 부품들을 사면, 컴퓨터 부품을 납땜해서 교체가 어렵기 때문에 사려고 하면 컴퓨터를 새로 사야한다.
+//이 경우에는 분명 컴퓨터를 하나 살 때는 어떤 부품을 사냐에 따라 확장성이 달라질 경우가 존재(확장성 발생)
+//여기서, 이걸 set으로 하면 부품을 바꿔버릴 위험이 존재하고(즉 사용자가 납땜을 했기 때문에 부품을 바꿀 수 없다), 생성자로 받기에는 Cpu,Ram,hdd,keyboard,마우스,monitor,gpu 등 받는게 너무 많아진다
+//이렇게 생성자로 받을 때 얼마나 코드가 복잡해지는지 아래에 코드로 표기했다. 
+public class java41 {
+    public static void main(String[] args) {
+        Computer computer=new Computer();
+        //cpu ram hdd ssd gpu keyboard computerMouse+monitor
+        //(cpu,ram,hdd,ssd,gpu,keyboard,computerMouse,monitor);
+        Computer computer2=new Computer("i7","DDR1","PATA","SLC","Fermi","linear","M590","TN");
+        Computer computer3=ComputerBuy.start()
+        .setCpu("i7")
+        .setGpu("Fermi")
+        .setHdd("PATA")
+        .setSsd("SLC")
+        .setKeyboard("linear")
+        .setMonitor("TN")
+        .setRam("DDR1")
+        .setComputerMouse("M590")
+        .build();
+        computer3.toString();
+        //대충 제품이랑 방식에 대한 종류로 구분안하고 그냥 보이는 대로 쳤는데 보면 알겠지만 이런 경우에는 빌더패턴이 효과적이다
+        //set()방식으로 사용자가 납땜을 했기 때문에 마음대로 바꾸지 못하게 설정하고, buy(구매) 할 떄만 cpu나 램을 고르게 해야하기 떄문이다.
+    }
+}
