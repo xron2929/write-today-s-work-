@@ -1,0 +1,271 @@
+오늘 되게 흥미로운 이슈를 발견했다
+class fafl {
+    class afew{
+        public zfank fanew;
+        public void fwfewae(){
+        System.out.println("?");
+        fanew.faefew();
+        }
+    }
+}
+class zfank{
+    public void faefew() {
+        System.out.println("??");
+    }
+}
+
+public class java43 {
+    public static void main(String[] args) {
+        fafl.afew fwwt=new fafl.afew();
+        fwwt.fwfewae();
+    }
+    
+}
+이렇게 접근 하려고 시도하면 잘 작동하지 않는다
+https://mainia.tistory.com/2675#:~:text=%EA%B2%80%EC%83%89%ED%95%98%EA%B8%B0-,%EC%9E%90%EB%B0%94%20No%20enclosing%20instance%20of%20type%20...,is%20accessible%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%20%EC%98%A4%EB%A5%98%20%EC%88%98%EC%A0%95&text=%EC%95%84%EB%9E%98%20%EC%98%A4%EB%A5%98%EB%8A%94%20static%20%ED%95%A8%EC%88%98,%ED%95%A0%20%EB%95%8C%20%EC%97%90%EB%9F%AC%EA%B0%80%20%EB%82%A9%EB%8B%88%EB%8B%A4.
+관련 이슈는 위에 있다
+그러면 위와 같이 해결하면 된다
+class fafl {
+    static class afew{
+        public zfank fanew;
+        public void fwfewae(){
+        System.out.println("?");
+        fanew.faefew();
+        }
+    }
+}
+class zfank{
+    public void faefew() {
+        System.out.println("??");
+    }
+}
+
+public class java43 {
+    public static void main(String[] args) {
+        fafl.afew fwwt=new fafl.afew();
+        fwwt.fwfewae();
+    }
+    
+}
+이번에는 NullPointException이 발생한다
+이러면 어떻게 해결해야하는지 조금 고민했다
+답은 간단하다 class가 static인데 이제 그 static(실행하기전 이미 정의된)class이므로 메소드도 실행하기 전에 static으로 선언하면 된다
+class fafl {
+    static class afew{
+        public zfank fanew;
+        public static void fwfewae(){
+        System.out.println("?");
+        fanew.faefew();
+        }
+    }
+}
+class zfank{
+    public void faefew() {
+        System.out.println("??");
+    }
+}
+
+public class java43 {
+    public static void main(String[] args) {
+        fafl.afew fwwt=new fafl.afew();
+        fwwt.fwfewae();
+    }
+    
+}
+그러면 static field에서 fanew는 static이 아니라고 에러가 뜨는데 위와 같이 수정하면 된다
+class fafl {
+    static class afew{
+        public static zfank fanew;
+        public static void fwfewae(){
+        System.out.println("?");
+        fanew.faefew();
+        }
+    }
+}
+class zfank{
+    public void faefew() {
+        System.out.println("??");
+    }
+}
+
+public class java43 {
+    public static void main(String[] args) {
+        fafl.afew fwwt=new fafl.afew();
+        fwwt.fwfewae();
+    }
+    
+}
+하지만 또 NullPointException이 발생한다
+어디가 문제일까...
+fwwt.fwfewae()에 노란색이 떠서 수정해도 class 자체에 접근하는 것의 차이일 뿐이라 마찬가지로 NullPointException이 발생한다
+정답은 위와 동일하게 생각하면 된다
+생성하는 값들이 static이므로, 호출할 때 함수도 static이면 된다
+class fafl {
+    static class afew{
+        public static zfank fanew;
+        public static void fwfewae(){
+        System.out.println("?");
+        fanew.faefew();
+        }
+    }
+}
+class zfank{
+    int price;
+    public zfank(int price) {
+        this.price=price;
+    }
+    public static void faefew() {
+        System.out.println("??");
+    }
+}
+
+public class java43 {
+    public static void main(String[] args) {
+        fafl.afew fwwt=new fafl.afew();
+        fafl.afew.fwfewae();
+    }
+    
+}
+그럼 위와 같이 수정할 수 있는데 위의 경우 price의 관련 데이터를 수정하려고 한다면 코드가 에러가 날 것이다
+그래서 아래와 같이 다른 class에서 생성자를 다뤄도 되도록 코드를 좀 더 연습하였다
+class A{
+    int price=4;
+    public A(int price) {
+        this.price=price;
+    }
+
+}
+
+class B{
+    public A afa=new A(4);
+    public void print() {
+        System.out.println(afa.price);
+    }
+}
+
+public class java44 {
+    public static void main(String[] args) {
+        B fwefe=new B();
+        fwefe.print();
+    }
+}
+여기서 한번 더 나가보자
+class fafl {
+    static class afew{
+        public static zfank fanew=new zfank(4);
+        public static void fwfewae(){
+        System.out.println("?");
+        fanew.faefew();
+        }
+        public static void print() {
+            System.out.println(fanew.price);
+        }
+    }
+}
+class zfank{
+    int price;
+    public zfank(int price) {
+        this.price=price;
+    }
+    public static void faefew() {
+        System.out.println("??");
+    }
+}
+
+public class java43 {
+    public static void main(String[] args) {
+        fafl.afew fwwt=new fafl.afew();
+        fwwt.fwfewae();
+        fwwt.print();
+    }
+    
+}
+즉 zfank는 생성자를 만들 때 static이 아니어도 호출하는 필드에서 static이면 따라서 static처럼 잘 작동한다
+이렇게 class를 private,protected로 바로 선언할 수 없기 때문에 위와 같이 작업했다...
+이렇게 static 필드로 하면 생기는 장점은 보안성이라고 생각한다
+class fafl {
+    private static class fa{
+    public static int calc() {
+        return 37;
+        
+        }
+    }
+    static class afew{
+        static fa fwe;
+        public static void fwfewae(){
+        System.out.println("?");
+        System.out.println(fwe.calc());
+        }
+    }
+}
+
+public class java43 {
+    public static void main(String[] args) {
+        //fafl.fa te=new fafl.fa();
+        fafl.afew fwwt=new fafl.afew();
+        //System.out.println(te.calc());
+        fwwt.fwfewae();
+    }
+    
+}
+
+물론 메소드랑 변수를 굳이, class로 잡을 필요는 없다.. 이렇게도 가능하다
+
+class A{
+    private int fawe=5;
+    private void afe() {
+        System.out.println("??");
+    }
+    public void afew() {
+        System.out.println(fawe);
+        afe();
+        System.out.println("fwee");
+
+    }
+}
+
+public class java44 {
+    public static void main(String[] args) {
+        A gae=new A();
+        gae.afew();
+    }
+}
+
+
+위처럼 하면  fafl.fa로는 main 에서는 접근이 불가능한데, 같은 fafl class인 afew에서는 마음대로 접근이 가능하다(클래스의 메소드 관계들을 생각하라..)
+class A{
+    private int fawe=5;
+    private void afe() {
+        System.out.println("??");
+    }
+    public void afew() {
+        System.out.println(fawe);
+        afe();
+        System.out.println("fwee");
+
+    }
+}
+
+public class java44 {
+    public static void main(String[] args) {
+        A gae=new A();
+        gae.afew();
+    }
+}
+물론 이렇게 메소드랑 변수를 접근해도 된다
+그럼 class를 왜 썼냐?
+단위별로 설계할 때 값이 너무 많아지면 class가 나은 경우가 존재하기 때문에 이렇게 짰다..
+무분별하게 함수랑 메소드가 늘어난다면 어떻게 되겠는가?..
+내가 오늘 문제점을 발견한 빌더패턴의 경우 setter를 쓰면 안되는데, 처음에 생성은 마음대로 해야할 경우, 그리고 생성자를 이용하기엔 생성할 값들이 많을 경우인데, 빌더 패턴도 setter처럼 대입 연산을 이용해 
+마음대로 값을 바꿔버릴 수 있다는 단점이 존재한다
+내가 선택한 예제에서 완전히 .build()로 끝내기 전까지 생성자는 마음대로 할 수 있도록 설계하고 짤 것이다.
+(즉 생성하기 전까지는 마음대로 바꿀수 있도록 하는 것도 막으려면 할 수 있는데 딱히 이 경우만 위와 같이 private class를 이용해 다른 class의 메소드로 호출은 자유롭되, 생성은 막게 짜면 됨..)
+(왜 class를 쓰냐에 대해선, 이 데이터가 이미 있는지 없는지를 구분하는 기준은 메소드랑 bool대수를 사용하는데 이게 같은 class에 존재한다기에는 조금 익숙하지 않은 느낌이 있다..)
+
+
+
+
+
+
+
+
