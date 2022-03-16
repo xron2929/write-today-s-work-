@@ -10,30 +10,37 @@
 오늘은 공부한 강의가 얼마 안되지만, 먼가 굳이 말하지 않아도 왜 이렇게 하였는가에 대한 답이 그대로 돌아오는 것 같다..
 회원 도메인 실행과 테스트에서 DIP 안지킨다길래 먼지 확인만 해보고, 먼 뜻인지만 확인해보고 말씀하신대로 코드를 수정했다(요구사항 분석에 있는 걸 직접 만들까 하다가 시간이 없어서 그냥 해보기로 했다..
 전에는 몰랐는데 pdf파일이 따로 있는 것 같다)
-입문강의로 공부하면서 자연스럽게 외웠던건지 디자인 패턴으로 공부하면서 이렇게 바꿨는지는 몰라도 기초강의 회원 도메인 실행과 테스트 부분의 문제점을 보고 위와 같이 해결해 작성했다
+잘못된 코드를 올려서 다시 연습했다..
+계속 공부해서 실수가 나온 것 같다
 
-Service단
-public class MemberServiceImpl implements MemberService{
-    private final MemberRepository memberRepository;
-    public MemberServiceImpl(MemberRepository memberRepository) {
-        this.memberRepository=memberRepository;
+
+class faewawefaw{
+    private static faewawefaw afaewf=new faewawefaw();
+    private static int t=3;
+    private wfeew fawew;
+    private faewawefaw() {
+        this.t=4;
+        
     }
-    @Override
-    public void join(Member member) {
-        memberRepository.save(member);
+    public void setfaewf(wfeew fawew) {
+        this.fawew=fawew;
     }
-    
-Test코드단
+    public static faewawefaw getAfaewf() {
+        return afaewf;
+    }
+}   
 
-public class MemberServiceTest {
-    // Member package을 실험하기 위해 Member package 생성
-    MemberRepository memberRepository=new MemoryMemberRepository();
-    MemberService memberService=new MemberServiceImpl(memberRepository);
+public class java42 {
+    public static void main(String[] args) {
+        wfeew fw=new wfeew(3);
+        wfeew wt4=new wfeew(11);
+        faewawefaw wewnl=faewawefaw.getAfaewf();
+        faewawefaw wewnl2=faewawefaw.getAfaewf();
+        wewnl.setfaewf(fw);
+        wewnl2.setfaewf(wt4);
+        System.out.println(wewnl.getAfaewf());
+        System.out.println(wewnl2.getAfaewf());
 
-    @Test
-main에서 실행단
-        MemberRepository memberRepository=new MemoryMemberRepository();
-        MemberService memberService=new MemberServiceImpl(memberRepository);
-        Member member = new Member(1L, "memberA", Grade.VIP);
-MemoryMemberReppository memorymemberRepository로 할까도 생각했는데 나중에 갈아끼울 때, 이게 더 나으니 이걸로 해서 고쳤다.
 
+    }
+}
