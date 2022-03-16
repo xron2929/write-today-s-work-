@@ -1,0 +1,42 @@
+자바 스프링으로 Configuration 사용하기
+프레임워크랑 라이브러리의 차이점
+xml과 자바 Configuration의 상위 인터페이스=new 구현체(); 이렇게 쓰셨는데
+테스트 코드를 이용할 때는 xml과 자바Configuration의상위 인터페이스=new 구현체(); 이런식으로 안 쓰고
+구현체 = new 구현체();라고 쓰시는 걸 보고 의문이 들어 질문글 찾아보니
+중간에 함수가 있는 인터페이스 같은 걸 가져다 쓰는 게 필요하니까 그냥 구현체로 하신다고 하셨고, 의문이 들어 자바로 짜보니까 이해가 되었다.
+interface afvewfwe{
+    public void fawe();
+}
+
+interface faweaeewf extends afvewfwe {
+    public void faweewrw();
+}
+class FEfwe implements faweaeewf{
+
+    @Override
+    public void fawe() {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public void faweewrw() {
+
+    }
+}
+
+
+
+public class java41{
+    public static void main(String[] args) {
+        afvewfwe fewf=new FEfwe();
+        fewf.fawe();
+        // fewf.faweewrw(); 인터페이스에 정의되어있지 않기 때문에 불가능
+
+    }
+}
+보다싶이 상위인터페이스에서는 자식 class나 하위 인터페이스의 메소드가 더 있다면 그 메소드는 담아낼 수가 없다
+그런데, 자식도 부모에 대해선 마찬가지로 제한적이다
+자식 class or 인터페이스는 부모 class나 interface를 담아낼 수가 없기 떄문이다
+즉 부모 객체는 오직 자신과 자식이 가지고 있는 메소드만 값을 다룰 수 있고 자식만 가지고 있는건 부모가 건들 수 없다
+자식 객체는 부모 객체에 있는걸 그대로 상속받거나 구현하기 때문에 건들 수 있지만, 부모 class나 interface의 값을 담아낼 수는 없다(부모는 담아낼 수 있지만 담아낸다면 자식이 가지고 있는 메소드는 사용할 수 없다)
+는 얘기이다
