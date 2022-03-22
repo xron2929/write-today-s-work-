@@ -1,0 +1,11 @@
+블러그에 제출한 코드 중 어떠한 부분에 에러가 있어서
+좀 더 나은 코드를 짜는 것 같아 수정을 했다
+https://hellocoding.tistory.com/manage/newpost/6?type=post&returnURL=https%3A%2F%2Fhellocoding.tistory.com%2F6
+그리고 스프링을 공부하면서 강사님이 Category랑 ITEM이 있다면 Category에서 같은 상품을 여러번 주문하고 Item에서는 여러개의 물품을 호출할 수 있다면
+다대다 관계라 중간에 하나의 class를 두는 것이 맞다며, 편법이 있긴한데 위와 같이 짜시라고 말씀하셨다
+사실, 편법인지는 모르겠는데, 자바 환경에서는 시간이 없다면
+Item에는 ItemList랑 CategoryList를 각각 정의하고 CategoryList를 생성자를 받아서 참조하고
+마찬가지로 Category에도 CategoryList랑 ItemList를 각각 정의하고, ItemList를 받으면 되는데(만약 Category랑 Item이 각각 많이 정의되어있다면,
+Category에는 Item class를 정의하고 생성자를 그냥 값을 받으면 되는데, 이걸 스프링에서는 애너테이션으로 전달하는 느낌도 있고,
+테이블 관계에서는 Many to Many가 안되신다고 말씀해주셨는데, 아직은 입문 편과 기본 편만 본 상태라 좀 더 스프링을 짜면서 이게 무슨 말인지 이해해가야 될 거 같아서
+나중에 시간 날 떄 개념을 정리하고, 이런 관계에 대해 생각해봐야겠다고 느꼈다.
