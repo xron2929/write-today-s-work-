@@ -12,8 +12,8 @@ A랑 B가 있을 떄 A가 B를 호출하는 규약이 자연스러우면 A->B , 
 즉 Member->Team 관계임( Member가 모이면 Team인 것이 Team이 Member들이라는 것보다 자연스러움)
 여기서 Member는 여러개, Team은 1개인 상태임(따라서 다:1관계)
 1:다 관계
-하나의 Member는 여러개의 Locate(사물함)을 가질 수 있음
-즉 Member->Locate 관계( Member가 Locate(사물함)를 가지는 주체, Locate는 Member가 가짐으로써 생겨나는 객체임)
+하나의 Member는 여러개의 Locker(사물함)을 가질 수 있음
+즉 Member->Locker 관계( Member가 Locate(사물함)를 가지는 주체, Locate는 Member가 가짐으로써 생겨나는 객체임)
 남은 건 내일 정리해야겠다
 
 
