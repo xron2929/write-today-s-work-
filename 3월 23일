@@ -1,19 +1,17 @@
 인프런 ORM JPA 프로그래밍 강의 중 1:1로 Member_id를 Locker에, Member에서 Locker를 DB에서 참조하는 방법이 없다고
 7:06초에 말씀해주시면서, 각각의 단방향 JPA에서는 지원하지않고, 양방향에서는 지원해주신다고 말씀해주셨다.
+기본 방향은 1:다 방향,다:1 방향,1:1 방향, 다:다 방향이 존재
+
 그리고, 양방향인 경우는 서로가 서로의 Owner일 수도 있는데, 
-단방향일 때는, 
-A랑 B가 있을 떄 A가 B를 호출하는 규약이 자연스러우면 A->B , 반대로 B가 A를 호출하는 규약이 자연스러우면 B->A임(즉 둘 중 하나의 class가 좀 더 능동적인 것이 주 테이블,
-능동적인 것이 정해지면 자동으로 따라오는 수동적인 것이 메인 테이블이라고 생각해볼 수 있음)
-여기서 A-> B일 때의 A, B->A일 떄의 B는 주 테이블, A->B일 때의 B, B->A일 때의 A는 메인 테이블 상태라고 말할 수 있음
-그리고, 
-1:1 1:다 다:1 다:다 관계로 나눌 수 있음
-다:1 관계
-여러개의 Member는 하나의 Team을 나타냄
-즉 Member->Team 관계임( Member가 모이면 Team인 것이 Team이 Member들이라는 것보다 자연스러움)
-여기서 Member는 여러개, Team은 1개인 상태임(따라서 다:1관계)
-1:다 관계
-하나의 Member는 여러개의 Locker(사물함)을 가질 수 있음
-즉 Member->Locker 관계( Member가 Locate(사물함)를 가지는 주체, Locate는 Member가 가짐으로써 생겨나는 객체임)
-남은 건 내일 정리해야겠다
+단방향일 때는, 하나의 Owner가 정해짐
+그리고, 다:1과 1:다의 경우에는 일반적으로는 다:1 방향을 선호
+(다:1의 경우에는 Member class와 Team class가 있다면 Member.Team처럼 Member class의 객체로 접근하는 반면,
+1:다로 접근하는 경우에는 Member class와 Team class가 있다면 Team안에서 Team.Members(list<Member>members=new ArrayList();)
+접근할 것들을 동적인 배열들(list)에 동적으로 추가해서 접근하도록 짠다
+후자는 Team class에서 Member같은 객체로 접근하는 것처럼 보이기 때문에ㅡ 
+좀 더 객체 지향적으로 보여진다는 장점이 있다.
+
+
+
 
 
