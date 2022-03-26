@@ -19,6 +19,49 @@ org.springframework.dao.InvalidDataAccessApiUsageException: org.hibernate.QueryE
 빌더패턴으로 접근한 방식은 class안에 public static class builder로 접근하던가 다른 class에서 static 메소드로 접근하던가 둘 중 하나의 방식을 이용한다
 갑자기 보니 되게 헷갈리게 다가와서 찾아보니 
 빌더 패턴이란 복합 객체의 생성 과정과 표현 방법을 분리해 동일한 생성 절차에서 서로 다른 표현 결과를 만들 수 있게 하는 패턴이다
+class Level {
+
+    public static Level of(int score) {
+      if (score < 50) {
+        return new Basic();
+      } else if (score < 80) {
+        return new Intermediate();
+      } else {
+        return new Advanced();
+      }
+    }
+
+}
+
+
+class Basic extends Level{
+
+}
+
+class Intermediate extends Level {
+
+}
+
+class Advanced extends Level {
+
+}
+
+class LevelBuilder {
+    public static Level start() {
+      return new Level();
+    }
+}
+public class java48 {
+    public static void main(String[] args) {
+        Level t=Level.of(40);
+        Level t2=LevelBuilder
+        .start();
+    }
+
+
+
+    
+}
 
 
 Level관련자료를 참조해 코드를 작성했다:https://tecoble.techcourse.co.kr/post/2020-05-26-static-factory-method/
