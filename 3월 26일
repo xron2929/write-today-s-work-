@@ -1,0 +1,16 @@
+오늘 스프링 파일 정리하면서 돌리다가 에러 터져서 많이 힘들었던 것 같다
+Test파일 작동이 안된다면 그 전에 Application이 돌아가는 지 꼭 확인해봐야한다(Application이 안되는데 Test파일 에러를 자꾸 수정하려니 에러가 터지는...)
+Application run failed 에러(Application run failed는 처음에 다른 Application 패키지를 만들어 보라고 해서, 그렇게 하니 에러가 안 터지고,
+@Service @Repository에서 Bean 등록하고, Test파일에서 @Autowired 주입을 했는데 에러가 발생해서 또 되도않게, 
+build.gradle의 dependency계속 건들여보고, junit 건들여보고 아니 이게 왜 안되는 거지?
+이러고 있었다...)
+더 찾아보고 고민해봤는데 내 경우는 Application안의 .class파일에 문제가 있는 경우다...라고 생각이 되어, 고쳤던 부분을 다 취소하고,
+class파일을 더 뒤져봤는데
+김영한 강사님 코드를 그대로 남겨두고 작업하다가 name이 같은 class파일이 존재해서, 에러가 터진 경우였다
+바로 확인하고, 에러를 수정했는데 MemberServiceTest에러가 또 터져서,
+최근에 작업한 MemberRepositoryTest의 경우 의존성이 제대로 주입되었다는 사실을 확인하고,
+MemberServiceTest에서 그전에 작업한 MemberRepository2 class를 주입받고,
+메소드 불러오는 건 되었는데, 
+org.springframework.dao.InvalidDataAccessApiUsageException: org.hibernate.QueryException: could not resolve property: userName of: jpabook.jpashop.domain.Member [select m from jpabook.jpashop.domain.Member m where m.userName=:name]; nested exception is java.lang.IllegalArgumentException: org.hibernate.QueryException: could not resolve property: userName of: jpabook.jpashop.domain.Member [select m from jpabook.jpashop.domain.Member m where m.userName=:name] 에러
+요런식으로 검색해보니, 블로그들 내용에 다 쿼리 에러라고 하길래, 쿼리를 뒤져보니, 그 전에 userName으로 naming하다가, name으로 바꿨는데, 거기서 수정안해줘서
+에러가 난 거라서, 직접 수정하니 성공적으로 잘 작동해본다는 사실을 확인해볼 수 있었다.
