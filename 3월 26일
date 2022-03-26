@@ -14,3 +14,85 @@ MemberServiceTest에서 그전에 작업한 MemberRepository2 class를 주입받
 org.springframework.dao.InvalidDataAccessApiUsageException: org.hibernate.QueryException: could not resolve property: userName of: jpabook.jpashop.domain.Member [select m from jpabook.jpashop.domain.Member m where m.userName=:name]; nested exception is java.lang.IllegalArgumentException: org.hibernate.QueryException: could not resolve property: userName of: jpabook.jpashop.domain.Member [select m from jpabook.jpashop.domain.Member m where m.userName=:name] 에러
 요런식으로 검색해보니, 블로그들 내용에 다 쿼리 에러라고 하길래, 쿼리를 뒤져보니, 그 전에 userName으로 naming하다가, name으로 바꿨는데, 거기서 수정안해줘서
 에러가 난 거라서, 직접 수정하니 성공적으로 잘 작동해본다는 사실을 확인해볼 수 있었다.
+정적 팩토리 메소드는 자신의 객체를 바로 불러올 수 있도록 static으로 자신을 반환하는 함수를 만들었는데, 이렇게 하면
+빌더 패턴과 되게 닮아있는 형태였다.
+빌더패턴으로 접근한 방식은 class안에 public static class builder로 접근하던가 다른 class에서 static 메소드로 접근하던가 둘 중 하나의 방식을 이용한다
+갑자기 보니 되게 헷갈리게 다가와서 찾아보니 
+빌더 패턴이란 복합 객체의 생성 과정과 표현 방법을 분리해 동일한 생성 절차에서 서로 다른 표현 결과를 만들 수 있게 하는 패턴이다
+
+라는 의미이기 떄문에 어느 쪽으로 접근해도 딱히 상관없을 꺼 같긴하다.(사실 이건 좀 다른 얘기인데, 다른 class에서 기존 class를 상속받았을 때와 클래스 안에서 클래스를 정의했을 때
+둘 다 내부적으로는 주소를 보면 똑같이 참조하는 것 같다.. 근데 여기서도 의문이 존재하는게, 
+class A{public static class B} 에다가 class C extends A{}를 하면 과연 C.B를 참조할 수 있을까?
+class A{
+    public static class B{
+        public static int t=4;
+        public static int getT() {
+            return t;
+        }
+    }
+}
+
+class C{
+
+}
+
+public class java49 {
+    public static void main(String[] args) {
+        A a=new A();
+        System.out.println(A.B.getT());
+        // System.out.println(C.B.getT());
+    }
+}
+놀랍게도 참조가 불가능하다.
+따라서 이렇게 참조했을 때의 차이점은 A.B로 참조하냐 C로 참조하냐 일뿐이고, 내부적으로는 상속과 비슷하게 봐도 될 것 같다(다른 패키지에서는 import A.B로 참조가 되니 차이가 없다..)
+)
+햇갈릴 수도 있을 것 같은데 
+
+class Level {
+
+    public static Level of(int score) {
+      if (score < 50) {
+        return new Basic();
+      } else if (score < 80) {
+        return new Intermediate();
+      } else {
+        return new Advanced();
+      }
+    }
+
+}
+
+
+class Basic extends Level{
+
+}
+
+class Intermediate extends Level {
+
+}
+
+class Advanced extends Level {
+
+}
+
+class LevelBuilder {
+    public static Level start() {
+      return new Level();
+    }
+}
+public class java48 {
+    public static void main(String[] args) {
+        Level t=Level.of(40);
+        Level t2=LevelBuilder
+        .start();
+    }
+
+
+
+    
+}
+
+여기서 Level에 있는 것도 public static 아냐? 라고 생각할 수 있는데 이건 리턴 타입이 자신인 "함수" 이고,
+위의 내용은 내부적으로 public static class로 접근 하냐에 관한 내용이다
+(함수는 상속된 데이터가 참조하는 것이 가능하고, 구현체(or 상속체)끼리는 접근이 불가능하다는 사실을 생각하면 될 것 같다.
+
