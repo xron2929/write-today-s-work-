@@ -1,0 +1,28 @@
+tymleaf 정리(3.28~3.29)
+MVC 패턴은 Servlet API로 구현되어있는데,
+Servlet API는  동적 API, 쿼리문(db),매핑 이런걸 처리하는 것(시간이 지나면서 servlet은 mvc처리같은 거만 하게됨)
+OGNL이 bject-Graph Navigation Language가 이름 값만 보고도 자동으로 내용이랑 연결을 해주는 처리를 함
+
+th:text는 텍스트 중간에 있는 태그를 무시하기 때문에
+th:utext를 써야됨
+그리고, th:text랑 th:utext에서 단순히 문자열이랑 같이 더하는게 아니라, 값만 동적으로 가져오는 경우는
+<!--<p th:text="#{content.id}" th:attr=''></p>-->
+이게 아니라
+<th:block data-th-text="#{content.id}"/>
+요런식으로 써야됨
+#{context.id} 이런 형식은 properties를 만들어서 값을 주입하는 느낌이라 사실상 정적인 느낌임..
+<th:block data-th-text="${value2}"/>
+$는 model에서 매핑한 값을 동적으로 받을 수 있는데
+${model.id}이렇게 받으려고 시도했는데 계속 값이 주입이 안되서 어려웠는데,
+controller에서 매핑할 때
+model.addAttribute("o",O.class); 이게 아니라
+model.addAttribute("o", new O()); 이런식으로 주입해야됨
+model.addAttribute()를 여러번 사용하는 것도 가능
+그리고, 자체 태그를 넣을 떄, th:text랑 text가 있으면
+정적으로 파일만 불러올 떈 text 태그가 사용되고, 동적으로 올 떄는 th:text가 사용됨
+"${'valueee4'}" 이렇게 해도 안에 정적으로 주입하는 것처럼 되는 느낌임
+${a.b.c}; 랑 *{a.b.c}랑 둘다 object타입이 따로 없다면 동일하게 사용가능
+반면 th:object=${a.b}라면 a.b.c를 참조할 떄 *{c}로 접근하거나,  ${a.b.c}, ${#object.c}로 접근해야되서
+*랑 #은 다른 느낌임
+
+
