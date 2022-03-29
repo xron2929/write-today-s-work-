@@ -28,6 +28,20 @@ ${a.b.c}; 랑 *{a.b.c}랑 둘다 object타입이 따로 없다면 동일하게 �
 <a href="details.html" th:href="@{/order/details/{orderId}(orderId=${o.id})}">view</a>
 타임리프에서 /3이오는거랑 /orderId=3이 오는 거랑 어떻게 구분해서 처리를 하는 지 안 알려줘서 위와 같이 구현함 ()로 뒤에 따로 구현하고 앞에서 {orderId}이런식으로 접근하면 됨
 반대로 ?orderId=3 을 하는 방법은 타임리프에 정리되어있으니 생략함
-
+그 외에 url 표현에 대해 찾다가 https://catsbi.oopy.io/32a9458e-f452-4733-b87c-caba75f98e2d 이걸보고 &랑 ? 의문자를 보고 의문이 들어서 아래와 같이 코드를 각각 실행해서 확인해봄
+    <a href="details.html" th:href="@{/order/details/{orderId}(orderId=#{o.id})}">view</a>
+<!-- resources 자원에 properties 파일을 만들어서 그걸 매핑함-->
+    <a href="details.html" th:href="@{/order/details/{orderId}(orderId=${o.id})}">view</a>
+<!-- new O() 이렇게 해야돌아가네 O.class는 안돌아감 -->
+    <a href="details.html" th:href=" @{/hello(param1=${o.id}, param2=${o.id})}">view</a>
+    <a href="details.html" th:href=" @{/hello/{param1}(param1=${o.id}, param2=${o.id})}">view</a>
+    <a href="details.html" th:href=" @{/hello/{param1}(param1=${o.id}, param2=${value})}">view</a>
+    <a href="details.html" th:href=" @{/hello/{param1}(param1=${o.id}, param2=${value},param3=${o.id})}">view</a>
+<!-- {param1}을 하면 그 안으로 값이 들어감 만약 밖에 선언안해준 값이면 그 값들은 전부 &로 처리함-->
+    <a href="details.html" th:href=" @{/hello/{param1}/{param5}(param1=${o.id}, param2=${value},param4=${o.id},param5=${value})}">vie212w</a>
+<!-- {param1},{param5}같이 안에 정의해둔 코드들은 바로 뒤에 들어감 그 다음 ()로 안에 참조안해준것들만 ?의 뒤에 들어가서 &로 구분해서 값이 들어감
     
+결과는 주석에 있는 내용과 같이 따로 앞에 사용이 안되어있다면 ?의 뒤로 들어가고
+사용이 된다면 뒤에 ?로 안들어감 
+그리고, ?의 뒤로 들어간 것끼리는 &구분자가 구분해서 보여줌
 
