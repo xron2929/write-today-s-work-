@@ -72,5 +72,6 @@ Gradle이고 가이드는 3.0.0임을 미리 알린다.. 버전이 업뎃되면�
    하지만, _(underbar, no-operation)를 이용하면 static값만 바꾸면 되서 훨씬 효과적이다
        <a href="http://localhost:8080/order/details/0" th:href="_">view</a>
     text뿐만 아니라 안된다는 내용은 안 보여서 이렇게 하이퍼링크같은 거의 모든 태그에 가능하지 않을까 싶다
-    
+    Configuration은 Conversion service로 구현되어있고, 현재 스프링 3과 스프링 4의 통합 패키지에서 투명하게 통합된 상태로(거의 비슷한 로직이라는 걸 말하는 것 같다..)
+    ${{...}} and *{{...}} 표현자를 자동으로 쓸 수 있도록 해주는 것 같다.
    
