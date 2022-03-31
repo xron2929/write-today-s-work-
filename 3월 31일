@@ -1,0 +1,20 @@
+db를 쓰는 이유
+단순히 하나의 저장소를 담당하는 class랑 구분을 위해서 primary ID키를
+만들면 되지않나 의문이 들었는데
+찾아보니, 데이터를 read할 떄, 그러면 O(N)으로 짜던가, 최적화 함수를 짜야되는데
+이 과정이 너무 불필요하고, 뿐만 아니라 userData만 관리한다고 할 떄
+데이터의 일부 기능만 create하거나 delete하는 이런 기능도 다 코딩해야되기 떄문에 불필요함이 존재한다
+
+
+요즘 타임리프 튜토리얼 내용을 번역해보면서 공부하려고 하는데 많이 어려운 것 같다
+링크를 보낼 떄는 insert,replace,include 방식이 있고
+include는 타임리프 3.0부터는 추천하지 않는 방식이다
+그리고 th:insert는 호출했던 태그 안에 호출받은 태그가 그대로 들어가지만,
+th:replace는 말 그대로 대체되어, 호출했던 태그대신 호출받은 태그만 존재한다
+th:include는 태그는 안 남고 안의 글귀만 남는 방식인 것 같다
+그리고 타임리프는 replace나 insert를 사용할 떄 파라미터를 이용해 값을 보낼 수 있는데
+예를 들어 th:replace="/fragments.header::header(value1='this')"; 이렇게 보내주면
+fragments.header.html파일에서 th:fragment="header(value1)" 이렇게 들어와서
+그 안의 컨테이너에서 th:text="${value1}" 이렇게 작성하면 그대로 값이
+안으로 들어온다
+
