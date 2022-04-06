@@ -1,1 +1,77 @@
-.
+db 매핑을 실제로 하는 작업에서 findMember가 Member table을 반환하는 지 member ID를 반환하는 지 부터 시작해서
+
+public class JpaMain {
+    public static void main(String[] args) {
+        EntityManagerFactory emf= Persistence.createEntityManagerFactory("hello");
+        EntityManager em=emf.createEntityManager();
+        EntityTransaction tx=em.getTransaction();
+        tx.begin();
+        try {
+            Team team=new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member=new Member();
+            member.setUsername("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+            List<Member> members=new ArrayList<>();
+            Member member2=new Member();
+            Member member3=new Member();
+            members.add(member2);
+            members.add(member3);
+            member2.setUsername("t");
+            member3.setUsername("sf");
+            members.add(member2);
+            members.add(member3);
+            team.setMembers(members);
+
+            em.persist(team);
+            em.flush();
+            Member member5=em.find(Member.class,member.getId());
+            // em.find로 했을 때 테이블을 읽어들임
+            // 위와 같은 사유로 getId보다는 getTable을 선호하는듯
+            List<Member> members2=member5.getTeam().getMembers();
+            for(Member m:members2) {
+                System.out.println(" m = "+m.getUsername());
+            }
+
+            tx.commit();
+        }   catch (Exception e) {
+            tx.rollback();
+        }   finally {
+            em.close();
+        }
+        emf.close();
+    }
+}
+
+왜 이렇게 하면 @MANYTOONE(EAGER)로 하든, @MANYTOONE(LAZY)로 하든,  EntityContext에서는 getMembers가 반환되는데
+왜 db에서는 MemberTable은
+
+MEMBER_ID  	USERNAME  	TEAM_ID  
+2	          member1	      1
+이렇게 나오고
+
+
+TEAM_ID  	TEAM_NAME  
+1	        teamA
+team 테이블도 왜 비슷하게 이렇게 나오는 지에 대한 의문이 많았다 
+그렇게 몇 시간 계속 보다 보니 직감적으로 왜 이렇게 나오는 지에 대한 의문을 해결하게 되었다
+이유는 EntityContext와 db가 다루는 역할은 다르다
+즉, EAGER로 했을 때도 마치 찍어볼때는 지연로딩이 된 것과 같은 느낌을 받았지만 내부적으로는
+db테이블에서는 오직 @Column과 @JoinColumn @OneToMany로 이런식으로 컬럼 매핑된 것만 받는다
+즉 db에 할당 되지 않은 정보는 내부적으로 어떻게 되어있는 지 관여 안하고 이는 EntityContext에서 관여하는 가장 좋은 예시라고 볼 수 있다
+위와 같이 작동시키면 내부적으로는 db에서 setter로 돌았지만 team의 db는 team_id와 team_name에만 관여할 뿐 그 이상은 EntityContext가 처리한다
+따라서, setter로 이름을 바꿔도 entityContext에서 처리하고, Team_id는 setter니까 동일하고, team_name 역시도 오직 team안에서의 member값만 바꿨기 때문에 동일하다
+그렇다면 member의 db는 어떠한가?
+member는 member_id username team_id만 관여한다
+그런데, 한번 생각해보라 이미 em.persist(member);를 하고,
+team 값만 변경했기 떄문에 아무것도 처리하지 않는다
+나는 처음에 여기서 flush로 db로 넘겨도 작동하지 않는 것을 보고 하이버네이트or JPA(플러시)가 자동으로 막아주는 줄 알았으나
+본질적인 것은 위와 같다는 것을 알 수 있었다.
+따라서, 주의해야될 점은 EntityContext는 단순히 db를 lazy loading이나 Fatch Join만을 지원해주는 것은 아니라는 점이다.
+
+
+
