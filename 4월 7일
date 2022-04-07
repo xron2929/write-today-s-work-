@@ -41,6 +41,7 @@ team만 바꿔줄뿐 member 테이블의 team에는 아무런 영향을 끼치�
 전에 강사님꼐서는 isolation level이 read commit이어도 repeated read 보장하신다고 말씀하셨는데
 오늘 그거 보고 오니까, 그게 어제 내가 올린 것과 관련이 있나 싶었는데
 그거는 복수의 트랜잭션에 관한 얘기고, 내가 오늘 올린건 하나의 트랜잭션에 관해 올린 것이다.
+(commit안해도 자동으로 스냅샷에 올라간다는 점에 대한 부분은 강조하는 내용이 아니었기 떄문)
 트랜잭션 격리수준은 4개로 분리된다
 READ UNCOMMITTED
 READ COMMITTED
@@ -56,13 +57,27 @@ Phantom Read
 
 READ UNCOMMITTED은 Dirty Read, Non-Repeatable Read, Phantom Read의 문제점을 다 가지고 있다.
 Dirty Read는 수정하고, 커밋도 날리지 않았는데 다른 트랜직션에서 조회하면 수정한 걸로 데이터를 가져온다. 서버가 중간에 종료되면 바뀐 값을 가져오기 떄문에 큰 위험성을 가지고 있는 것 같다
-Non-Repeatable Read은 한 커밋에서 값 조회하고, 그 중간에 다른 커밋에서 값 바꾸고 커밋하고, 다시 한번 더 조회하면 그 기존 커밋값과 새로 커밋한 값이 바뀐다
-(개인적으로 위의 경우 불리하게 적용할 수 있는게 트랙직션을 비동기로 처리할 경우 코드가 복잡한 로직이 되면 비동기에 불안정할 것 같은데 확실하지 않다.. 그랬으면 자료가 있어야 되는데
-저부분에 대한 관련 글이 잘 보이질 않는다 synchronized로 고정시키면 되니까, 또는 비동기로 처리 안하면 되니까, 또는 REPATABLE READ를 주로 사용하니까 안 뜬건지는 모르겠다)
-REPEATABLE READ의 경우 바로 아래에서도 적었지만, Phantom Read의 문제점을 가지고 있고, Non-Repeatable Read의 문제점을 가지고 있지 않은데,
+
+Non-Repeatable Read은 A 트랜잭션 만들고 B 트랜잭션 만들고,
+A트랜잭션에서 조회한다음에 B트랜잭션에서 해당 조회한 것의 값을 바꾸고, 바꾼 내용을 commit()하고,
+A트랜잭션에서 다시 한번 더 조회하면 기존에 조회한 내용과 새로 조회한 내용이 다르다는 문제이다
+(물론 값을 일찍 바꾸고 commit()을 늦게해도 된다)
 
 
-READ COMMITTED는 Non-Repeatable Read, Phantom Read의 문제점을 가지고 있고,
+Phantom Read의 문제는 기존 커밋값과 새로운 커밋값의 db를 동시처리할떄, 첫번째 조회한 내용과 다르게, 나중에 조회한 내용에 새로 바뀐 값이 다음줄로 새로 나타나는 문제이다
+(위의 경우와 다른 점은 Phantom Read는 삽입과정이 나타나고, 
+Non-Repeatable Read는 중간에 row의 price: 100이 다른 트랜잭션으로 바꿔서 price:200 이런식으로 바뀌는 수정이나, 해당 줄이 없어져버리는 삭제과정의 에러가 나타난다)
+
+READ COMMITTED는 Non-Repeatable Read, Phantom Read의 문제를 가지고 있다
+
+REPEATABLE READ는 Phantom Read의 문제를 가지고 있는데, 한번 값을 반환했으면 그 다음부터는 그대로 값을 반환하거나, 
+해당 부분에 ROCK을 걸어, 읽기가 끝나면 그 다음부터 쓰기나 수정이 가능하도록 하는 방법으로 해결한다
+
+SERIALIZABLE는 단순하게, 트랜잭션이 동시 실행 되지 못하고, 하나의 트랜잭션이 끝나면 다른 트랜잭션이 작동하도록 하지만, 동시에 진행이 안되니 성능이 떨어진다
+
+
+마지막으로 SERIALIZABLE는 동시성으로 처리해도 이러한 영향을 받지 않지만, 
+작업 중인 트랜잭션이 완전히 종료될 때까지 다른 어떤 작업도 허용하지 않아 성능이 떨어진다.
 
 
 
