@@ -1,1 +1,6 @@
+Member랑 Team이랑 MemberClub이랑 MemberAddress등 여러 class가 연결되어있다면 
+즉시로딩을 할 때 Member를 가져오면 다른 class도 다 insert문이 나가는데, 이러면 비효율적이기 때문에
+지연로딩으로 짜면 Member만 가져오면 Member는 db에서 꺼내오고, 연결된 다른 class는 다 entitycontext에서 db조회해서 그걸 프록시객체로 가져오는데, 
+member.getTeam().getName()이렇게 사용하면 그떄 진짜 db랑 연동해서 insert문을 날린다
+연관관계 매핑하는 작업은 이렇게 "db에서 값을 가져올 때 사용하기 위해" 자동으로 처리 시키기 위해 사용하는 것 같다는 생각이 들었는데 이게 맞는지는 잘 모르겠다.
 
