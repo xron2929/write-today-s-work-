@@ -1,1 +1,89 @@
 
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+class FastIn
+{
+public:
+	const static int BUFFER_MAX = 1000003;
+	static char buf[BUFFER_MAX + 1];
+	static int pos;
+	FastIn()
+	{
+		clear();
+	}
+	static void clear()
+	{
+		pos = BUFFER_MAX;
+	}
+	static void read_buffer()
+	{
+		fread(buf, sizeof(char), BUFFER_MAX, stdin);
+	}
+	static char getchar()
+	{
+		if (pos == BUFFER_MAX)
+		{
+			read_buffer();
+			pos = 0;
+		}
+		return buf[pos++];
+	}
+	static int nextint()
+	{
+		int res = 0;
+		char c;
+		do
+		{
+			c = getchar();
+		} while (c < '0' || c>'9');
+		res = c - '0';
+		while (1)
+		{
+			c = getchar();
+			if (c < '0' || c>'9')break;
+			res = (res * 10) + c - '0';
+		}
+		return res;
+	}
+	//문자 하나하나 계산해서 값 반환
+};
+
+char FastIn::buf[FastIn::BUFFER_MAX + 1];
+int FastIn::pos;
+int v[3000009];
+int ch[3000009];
+int l, ml, mk, c,x;
+
+옛날에 코딩하면서 답 참조하는 코드 중에
+버퍼를 이용하는 코드인데, 왜 이렇게 짜면 빠른건지에 대한 의문이 있었는데 지금 보니까
+fread()에서 가득차서 버퍼에 보내주는 과정 때문에 저기서 BUFFER_MAX가 가득차면 fread로 보내주는데,
+이 값이 너무 작으면 여러번 버퍼를 보내줘야되야 하는데 입력값이 10^8이라 입력버퍼를 임의로 크게 잡고 설정한 코드이다.
+기본적으로 이 상태에서 fread가 64kb(512000비트)만큼 받을 수 있는데, 여기 값을 똑같이 512000넣는 것보다는 큰 메모리 버퍼에서 
+따라서 백준에서 fread로 보낼 때 메모리를 연속적으로 읽으니까 한번에 큰 메모리를 보내주는게 조금 더 빠른 성능을 가졌다
+또한, 자바또한 한 번 메모리를 가져올 떄마다 4바이트이다
+https://joont92.github.io/java/%EC%9E%85%EC%B6%9C%EB%A0%A5/
+(1바이트로 가져와도 내부적으로 각각 따로 패딩작업이 일어나면서 형변환이 일어나기 때문에 4바이트를 사용한다
+배열로 가져와도 패딩 작업은 일어나지 않는다고 한다. 오직 구조체에서만 발생한다 이유는 위에도 질문자가 올렸지만 https://www.inflearn.com/questions/32726 이것과 같다
+배열 관련 내용은 아래 주소 참조
+https://code-examples.net/ko/q/1046b9 )
+
+그렇기 때문에 어떤 언어든 최소한으로 한 글자마다 4비트씩 사용한다 
+다시 본론으로 돌아와서, 저렇게 짜는 이유는 최대 4*(9*7+7+3+7) 비트가 String버퍼로 들어올 수 있다
+따라서 stream버퍼로 담으면 내부적으로 비워주고 다시 초기화해서 0부터 다시 입력받고 버퍼 채운후 보내줘야 되서
+크게 받은 다음에 한 번 보내줄 때 보다 비효율적이다
+따라서 위와 같이 짰고, 오히려 버퍼를 너무 크게 잡는다면
+메모리를 많이 잡아먹을 것이다
+저걸 보고 드는 생각이 단순히 시간복잡도만 고려하지말고 stream 내부에 들어오는 값도 생각을 해봐야겠다고 많이 들었다
+
+
+
+
+
+
+
+
+
+
+
