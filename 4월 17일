@@ -12,7 +12,87 @@ add() 함수로 head에서 nextptr를 추가하고 반환 형을 해당 노드�
 이렇게 하면 동적배열을 전역으로 사용해서 메모리 낭비가 조금 있지만, 연결리스트가 엄청나게 많은 구조라면 이 쪽이 더 효과적으로 짤 수 있을 것 같은데,
 c언어를 안한지 조금 되어서 오랜만에 하니까 잘 작동하는지 모르겠다. 
 나중에 해봐야겠다
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
+class Yreg{
+	public int t;
+	public String x;
+	@Override
+	public int hashCode() {
+		return Objects.hash(t, x);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;	// 자기 자신의 주소 이면 
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Y other = (Y) obj;
+		return t == other.t && Objects.equals(x, other.x);
+	}
+}
+
+class Zger{
+	public int t;
+	public String x;
+}
+
+class FELM{
+	public String data;
+	public String name;
+	public int grade;
+}
+
+
+public class FSE {
+	public static void main(String[] args) {
+		Map<Yreg, FELM> fruits = new HashMap<>();
+		Yreg yreg=new Yreg();
+		FELM flem=new FELM();
+		FELM flem2=new FELM();
+		FELM flem3=new FELM();
+		flem.data="few";
+		flem.name="rger";
+		flem.grade=1;
+		flem2.grade=4;
+		flem2.name="egre";
+		flem2.data="GREG";
+		flem3.data="bregg";
+		flem3.name="hettreh";
+		flem3.grade=2;
+		yreg.t=3;
+		yreg.x="Common";
+		Yreg yreg2=new Yreg();
+		yreg2.t=3;
+		yreg2.x="Unique";
+		Yreg yreg3=new Yreg();
+		yreg3.t=3;
+		yreg3.x="Only";
+		fruits.put(yreg,flem);
+		fruits.put(yreg2, flem2);
+		fruits.put(yreg3, flem3);
+		Yreg yreg4=new Yreg();
+		yreg4.t=3;
+		yreg4.x="Unique";
+		FELM flem5=fruits.get(yreg2);
+		// FELM flem5=fruits.get(yreg4);
+		
+		System.out.println(flem5.data);
+		System.out.println(flem5.name);
+		System.out.println(flem5.grade);
+		
+		
+	}
+}
+그리고 key랑 value는 이런식으로 객체로 잡아도 당연하지만 잘 돌아가는데,
+.equals()로 key값을 분류한다고 해서 .equals()가 default고 오버라이딩되어있는 상태면
+해당 객체와 동일한 값만 입력해도, fruits.get(yret4)처럼 탐색이 될 것 같았는데, 실제로 해보니까 이렇게 오버라이딩해도
+잘 작동하지 않았던 걸 확인했다...
+자바 8에서 default를 지원해주니까 안해주는 것 같기도 하다.
 
 
 
