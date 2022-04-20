@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+int main(void) {
+	
+	// your code goes here
+	
+	int *arr=(int *)malloc(sizeof(int)*4);
+	
+	for(int i=0;i<4;i++) {
+		*(arr+i)=4;
+	}
+	
+	printf("arr: %d\n", arr);
+	printf("*arr: %d\n",*arr);
+	arr=arr+1;
+	for(int i=0;i<4;i++) {
+		printf("end *(arr+i) %d\n",*(arr+i));
+	}
+	printf("%d",*arr);
+	// 주소를 늘리거나 줄이거나 할 수 있는데 변수의 주소 값은 못바꿈
+	
+	return 0;
+}
+c언어 답변달다가 다음날에 갑자기 변수의 주소 값 바꿀 수 있었는지 의문이 나서 짜 보니까 안되는 걸 확인했는데,
+ptr=ptr+1; 그러니까 ptr(현재 주소를 가리키는 값만 변경이 되고, arr배열에 대한 주소는 바뀌지 않는 걸 확인 할 수 있었다)
+이중 포인터나 *&를 이용하라는 말도 들어서 짜보니까
+#include <stdio.h>
+
+
+int main(void) {
+	
+	// your code goes here
+	int price2=3;
+	printf("&price: %d\n",&price2);
+	int *ptr=&price2;
+	printf("ptr: %d\n", ptr);
+	printf("*ptr: %d\n",*ptr);
+	int **brr=&ptr;
+	*brr=*brr+1;
+	printf("ptr: %d\n", ptr);
+	printf("*ptr: %d\n",*ptr);
+	printf("&price: %d\n",&price2);
+
+	
+	
+	return 0;
+}
+아래와 같이 이중 포인터로 brr값을 늘려도, ptr(그러니까 어떤 주소를 가리키는 상태)만 바뀌지, &price에 대한 값은 바뀌지 않는다
+(참조할 점은 ptr(처음에는 &price를 가리키는 상태)가 바껴서 *ptr(주소를 가리키는 상태에서 해당 주소의 값)도 바뀌게 된다)
