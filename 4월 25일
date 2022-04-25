@@ -1,0 +1,14 @@
+오늘 sqlzoo가 작동을 안하길래 대안법을 찾다가, sqlbolt를 추천하길래
+공부하고 있는데 sqlzoo의 난이도에 비해 쉬워서
+오늘 안에 다 끝날 것 같다
+https://sqlbolt.com/lesson/updating_rows
+중간 중간 코드 짜보면서 inner join vs from 2개 쿼리
+having절 vs Where절 
+관련해서 고민했는데
+전자는 스택오버플로우애서 압도적으로 having 절이 우새했고,
+후자는 생각해보니 having 절은 group by로 단체로 묶은 타입,
+where는 단일 타입에 대한 느낌으로 사용해서
+그룹으로 묶은 항의 합이런느낌이면 having
+조건 절로 가져와서 나중에 묶을 때
+(having으로 해도 되지만 having attribute='movie' 같은 식으로)
+명시적으로 WHERE 절이 구분하기 더 좋은 것 같아서 이렇게 채용하기로 했다
