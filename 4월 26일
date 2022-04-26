@@ -2,3 +2,57 @@
 JPA 수업을 듣기 시작했는데 빨리 빨리 공부해야겠다
 매일 조금씩 보는데 볼 게 많아서 그런지 매일 공부해도 잘 모르겠다
 JPA기본 강의 까지만 듣고 스프링 중급/고급 강의 들은 다음에 다시 jpa를 듣고 공부하고 해야겠다
+일 대 다 관계에서 사이즈를 가져오면 뻥튀기가 된다고 하셔서
+일이 다가 되면서 그렇게 되는 건 알겠는데 사이즈가 다의 갯수만큼 가져오는 게 확실히 맞는지 궁금해서 실험해보니까 다음과 같이 확인해 볼 수 있었다
+public class JpaMain {
+    public static void main(String[] args) {
+        EntityManagerFactory emf= Persistence.createEntityManagerFactory("hello");
+        EntityManager em= emf.createEntityManager();
+        EntityTransaction tx=em.getTransaction();
+        tx.begin();
+        try {
+            Member member=new Member();
+            Team team=new Team();
+            Member member2=new Member();
+            Member member3=new Member();
+            member.createTeam(team);
+
+            team.setUsername("erhreh");
+            em.persist(team);
+            member.setAge(21);
+            member.setUserName("grgre");
+
+            em.persist(member);
+            member2.setAge(34);
+            member2.setUserName("ehrh");
+            member2.createTeam(team);
+            em.persist(member2);
+            member3.setUserName("erre");
+            member3.setAge(243);
+            Team team2=new Team();
+            em.persist(team2);
+            team2.setUsername("htrrth");
+            member3.createTeam(team2);
+            em.persist(member3);
+            Member member4=new Member();
+            member4.createTeam(team);
+            em.persist(member4);
+            
+            em.flush();
+            em.clear();
+            String query="select t From Team t join fetch t.members";
+            List<Team>result=em.createQuery(query,Team.class)
+                            .getResultList();
+            System.out.println("result.size() = " + result.size());
+
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+}
