@@ -1,2 +1,71 @@
 10일 동안은 개인 공부 하고 남은 기간동안 학은제 하면서 시간 보내야될 것 같다
 MVC 1편은 끝내고 학은제 하고 싶어서 당분간은 스프링 과목에 집중해야될 것 같아서 하고 있다
+서비스 계층에서 각각 로직을 구현하냐 아니면 도메인 계층에서 로직을 구현하냐 라는 의문이 들었는데,
+여기서, 생기는 의문점이 첫번째로 자료구조랑 객체를 같이 쓰지말라고 말하는데, 그러면 한 클래스에서
+도메인계층, 서비스계층,레파지토리계층 이런식으로 나누는 방법도 결국엔
+잡종 구조가 아닌가 생각이 들었는데, 다시 생각해보니
+중복된 로직에 대해 한번에 객체로 쓰느냐 아니면 이걸 각각의 로직으로 세분화해서 절차지향적으로 자료구조로 쓰느냐에 대한 차이인데,
+여기서 다시 의문이 드는데, 그러면 
+class Figure{
+  private int x,y;
+  public int setX(int x) ~
+  public int setY(int y) ~
+  public void getX() ~
+  public void getY() ~
+}
+class Square extends Figure {
+  int getArea() {
+    return super.x*super.y;
+  }
+class Circle extends Figure {
+    getArea() ~
+}
+class Triangle extends Figure {
+    getArea() ~
+}
+이것도 하나의 잡종이라고 볼 수 있다.
+이렇게 사용한 이유는 중복된 개념은 줄이되, 
+각각의 특정한 비즈니스 로직은 살리는 개념이라
+왜 이렇게 쓰지말라는지 의문이 들었는데,
+생각해보니 이렇게 하면 일단 단일 책임원칙에 대해 약간 어긋나는 것 같기도 하다
+하나의 클래스에 하나의 기능을 가지고 있는데, 이 경우 Figure는 사각형,삼각형,원에 대해서 도형의 크기를 한꺼번에 구하는 도형인데,(객체)
+사각형 삼각형 원과 같은 도형들의 x값과 y값에 대해 "Figure"가 관리한다 
+그렇다면 객체 또는 자료구조 형식으로 구현해야 하는데, 특정 비즈니스 로직을 살려야 하므로, 이 경우는 자료구조 역시 옳다고 보긴 어렵다
+그러면 아래와 같이 정리할 수 있다.
+class FigureLength{
+  private int x,y;
+  public int setX(int x) ~
+  public int setY(int y) ~
+  public void getX() ~
+  public void getY() ~
+}
+class Square {
+  FigureLength figureLength=new FigureLength();
+  int getArea() {
+    return super.x*super.y;
+  }
+class Circle {
+    FigureLength figureLength=new FigureLength();
+    getArea() ~
+}
+class Triangle {
+    FigureLength figureLength=new FigureLength();
+    getArea() ~
+}
+이렇게 보면 위의 경우에 비해 한꺼번에 구현되어 있지 않아서, 위의 경우 로직에 대해서 Figure도 봐야되고, 내부의 자료구조도 봐야하는데,
+아래는 개념이 깔끔하게 구분되어 있다
+즉 Composite와 상속을 다른 의미로 해석한 것이라고도 볼 수 있는 것 같다
+그럼 이 방식에서 FigureLength를 domain, Square,Circle,Triangle을 service라고 볼 수 있는데,
+여기서 getArea()에 대해서 각각 조건문으로 Triangle이면? Circle이면? Square이면? 이라고 FigureLength 대신 Figure라는 클래스로 composite 상태에서
+조건문에 따른 결과값을 구해온다면 이게 ddd가 옳지만은 않다는 점인 것 같다(이경우는 단일 책임 원칙에 대해서 어긋난다고 볼 수 있을 것 같다)
+그럼 다음으로 생각해봐야 될 점이 어쨌든 service랑 domain에서 각각 사용하니 안 좋지 않냐는 건데, 위의 경우 Length는 x랑 y값에 대한 기능만 하고 있기 때문에 쉽게 생각할 수 있다
+그러면, service랑 domain도 이렇게 특정 비즈니스 로직인지 아니면 공통된 도메인 역할인지 생각하면 될 것 같다
+사실 저 코드도 내부적으로 square 중 사다리꼴 같은 건 정사각형,직사각형과 다른데 square에 포함된다
+이 경우는 직사각형과 정사각형만 기준으로 보면 도메인이고, 사다리꼴 기준으로 보면 비즈니스 로직인데, 간단하게 사다리꼴 vs 사다리꼴이 아닌 사각형 이라고 두고,
+NotTrapezoidSquareLength TrapezoidSquareLength 이렇게 두 개를 두고, 단순히 SquareLength 대신 각각의 도메인으로 나누는 걸 생각해 볼 수 있는데
+서비스랑 도메인의 경우도, 서비스로직이 애매하게 중복된다면 중복되는 것만 도메인으로 묶어서 해당 도메인끼리 분리가 가능한지 생각해보고,
+그게 어렵다면 각각의 서비스로직끼리 구현해서 저렇게 하는 방법으로 하는게 맞는 것 같다
+
+
+
+
