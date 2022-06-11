@@ -1,0 +1,25 @@
+cpu 컴퓨터 구조 원리
+pc가 lord 할 지 store할지는 지 알아서 정하고, 각 lord,store,add등 명령마다 1비트 형태로 가지고 있음
+pc-> mar 같은 이동도 한 클럭인데,
+pc->mar->(주소버스를 통해) 메모리 -> (데이터 버스를 통해)mdr또는 mbr이라 불리는 레지스터로 감
+https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=syunjae21&logNo=221998720153
+https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=k97b1114&logNo=140160414447
+자세히는 CU에서 pc-> mar mar->메모리 이런 과정으로 가는게 하나의 클럭인데, 
+여기서 pc에서 memory로 cu 클럭단위가 먼저보내지는지, mar에서 메모리로 cu 클럭단위가 보내지는지 확실하지는 않은데, 아마 mar에서 메모리로 직전에 보내는게 클럭단위가 일정해서 이렇게 할 것 같은데 
+확실하진 않다
+어쩄든 간에 cu는 중요한 내용은 아닌 것 같아서 이 정도만 알고 있으면 될 것 같다
+그리고, 메모리에서 덧셈 2개는 어셈을 해보면 알겠지만, x+y는 각각의 메모리끼리 바로 연산이 불가능하다
+즉 중간에 레지스터(누산기)를 써야하는데 이게 어셈 단위에서 보면 레지스터 용량은 충분한거 같기도 한데 실제로 하나의 변수는 EAX로 갖다 쓰고, 더하는게 있고
+vs는 최적화가 되어있음에도 불구하고, eax랑 ecx 둘다 레지스터에 불러오도록 코드를 짠 것 같다(물론 vs에서 보여주는 거라 내부적으로는 최적화되어있을 수도 있다)
+(실제 vs를 뜯어보려고 시도했으나, 커널부터 쉘까지 알아야 나올만한 명령어가 나와서 알아듣을 수가 없다)
+그래서 vs에서 디스어셈블리로 뜯어봤을 떄는 eax,ecx로 x,y값을 계산하는 것을 확인했다
+https://defenit.kr/2019/12/03/Pwn/%E3%84%B4%20Research/linux-kenel-bpf/
+반면 여기는 누산기랑 dword ptr ds:[주소값] 이용해서 했는데
+https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=ndb796&logNo=220612992779
+이게 아마 dword ptr ds:[] 에서 관리하는 메모리가 mbr일껀데, 확실하지 않다
+관련 자료가 있으면 올릴 수 있는데 전문적인 자료를 올리자니 내 cs 능력도 부족하고 어셈도 이제 막 배워서 알아듣지를 못하고
+아마 지금까지 배운 걸로 생각하기엔 mbr이 dword ptr ds가 맞을 것 같다
+
+
+
+
