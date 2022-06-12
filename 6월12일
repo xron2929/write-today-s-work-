@@ -18,7 +18,10 @@ https://defenit.kr/2019/12/03/Pwn/%E3%84%B4%20Research/linux-kenel-bpf/
 https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=ndb796&logNo=220612992779
 이게 아마 dword ptr ds:[] 에서 관리하는 메모리가 mbr일껀데, 확실하지 않다
 관련 자료가 있으면 올릴 수 있는데 전문적인 자료를 올리자니 내 cs 능력도 부족하고 어셈도 이제 막 배워서 알아듣지를 못하고
-아마 지금까지 배운 걸로 생각하기엔 mbr이 dword ptr ds가 맞을 것 같다
+아마 지금까지 배운 걸로 생각하기엔 mbr이 어셈에 아래있는 메모리 공간인지 애매한데, 연산할 때 dword ptr ds:[] 이렇게 레지스터랑 누산기 하나씩 연산도 가능하다
+(물론 레지스터 2개는 연산은 불가능하다)
+
+
 
 
 
