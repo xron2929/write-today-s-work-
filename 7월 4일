@@ -1,1 +1,5 @@
-.
+select , PATH 설정, 파일 참조, if문 for문 while문, untill문,continue,break, function,return,unset 등 유닉스 관련된 문법은 다 공부했다
+지금까지 해왔던 언어들에 비해 직관적이지 않아서 
+#!bin/bash 이런건 꼭 해야되는지, select문이 뭐하는건지 환경변수 파일 설정이 제대로 안되는데 어디가 문제인지
+설정한다고 많이 힘들었는데 다 해결했다
+조금씩 하면서 많이 느는 것 같긴하다
