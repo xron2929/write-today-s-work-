@@ -1,5 +1,7 @@
-select , PATH 설정, 파일 참조, if문 for문 while문, untill문,continue,break, function,return,unset 등 유닉스 관련된 문법은 다 공부했다
+select , PATH 설정, 파일 참조, if문 for문 while문, untill문,continue,break, function,return,unset,let 등 유닉스 관련된 문법은 다 공부했다
 지금까지 해왔던 언어들에 비해 직관적이지 않아서 
 #!bin/bash 이런건 꼭 해야되는지, select문이 뭐하는건지 환경변수 파일 설정이 제대로 안되는데 어디가 문제인지
 설정한다고 많이 힘들었는데 다 해결했다
 조금씩 하면서 많이 느는 것 같긴하다
+도커 쓸 때 리눅스 기반인것 같던데, 지금 명령어를 바탕으로 하면 다 이해로 깔아서 어느정도 될 것 같기도 한데(중간 중간 group 만들고 어느 group에게 권한 주는지 같은거나 명령어가 조금씩 달랐던 걸로 
+기억한다 , 조금 더 해봐야될 것 같기도 하지만, 쉘 스크립트 자체에 대한 문법은 어느정도 짤 수 있으니 지금 꺼 기반으로 하면 어느정도 될 꺼 같다
