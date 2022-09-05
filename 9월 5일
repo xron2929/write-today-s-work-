@@ -1,0 +1,9 @@
+최근에도 공부중에 있는데, 김영한 선생님 강좌보면서 DataSource 대신 HikariDataSource를 쓰다가 알게되었는데 QueryForObject함수에는 sql,Object[],param) 
+(param은 낙타표기법을 카멜로 바꾼다던가 같은 형식, Object[]는 db랑 java의 객체랑 연동할 데이터, sql은 insert나 update같은 sql문)
+Object[]대신 Args여러개로 인자를 넣을 수도 있어서 위의 경우는 deperated되었고, 대신
+QueryForObejct(sql,param,Object[]또는 Args)형식으로 Replace 되는 추세라, Hikari를 사용하는 Dathttps://withseungryu.tistory.com/92aSource에는 sql,Object[],param을 인자로 하는 데이터 형식이 보이지않았다
+따라서, param이랑 객체를 바꿔보니 해결이 잘 되었다
+https://withseungryu.tistory.com/92
+그 밖에 DB는 히카리 툴이랑 연동하는데 앞의 것과 비슷하게 함수도 DataSource 반환타입이아니라 HikariDataSource라는 점 처럼
+중간 중간 에러코드를 읽으면서 데이터가 잘못 들어간것이 아닌지, 오타가 난 것이 아닌지, 아니면 Hikari말고 조금씩 다른 코드도 변경점을 주었는데 거기서 난 것이 아닌지
+그리고 해결하면서도 다른 곳에 히카리를 박아서 테스트코드환경에서 다른 데이터소스를 쓰면 에러가 난다던가 같은 이슈가 있었지만, 히카리로 결국에 다 해결하긴 했다
